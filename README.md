@@ -37,5 +37,5 @@ Each funnel keeps its own scoped stylesheet + `layout.tsx`; shared `/f` typograp
 
 ## Repo layout
 
-- `src/app/` — routes and layouts  
+- `src/app/` — routes and layouts   
 - `src/` — shared components and `lib/` (env, API clients) as we add them
