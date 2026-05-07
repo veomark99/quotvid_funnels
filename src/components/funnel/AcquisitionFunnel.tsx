@@ -471,17 +471,45 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
             </span>
           </div>
           <div className="visual-pins">
-            {model.visualCards.map((c, i) => (
-              <div key={i} className="pin">
-                <div className="pin-img">
-                  <div className="pin-auto">✦ Auto</div>
-                  <div className="pin-label">{c.dayLabel}</div>
+            {model.visualCards.map((c, i) => {
+              const hasVideo = Boolean(c.videoSrc);
+              return (
+                <div key={i} className="pin">
+                  <div
+                    className={
+                      hasVideo ? "pin-img pin-img--video" : "pin-img"
+                    }
+                  >
+                    {hasVideo ? (
+                      <>
+                        <video
+                          className="pin-video"
+                          src={c.videoSrc}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          aria-hidden
+                        />
+                        <div className="pin-img-content">
+                          <div className="pin-auto">✦ Auto</div>
+                          <div className="pin-label">{c.dayLabel}</div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="pin-auto">✦ Auto</div>
+                        <div className="pin-label">{c.dayLabel}</div>
+                      </>
+                    )}
+                  </div>
+                  <div className="pin-footer">
+                    <div className="pin-stat">{c.statLabel}</div>
+                  </div>
                 </div>
-                <div className="pin-footer">
-                  <div className="pin-stat">{c.statLabel}</div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

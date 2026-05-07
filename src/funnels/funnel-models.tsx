@@ -5,6 +5,8 @@ export type FunnelSlug = "pinterest" | "youtube";
 export interface FunnelVisualCard {
   dayLabel: string;
   statLabel: string;
+  /** Optional `/assets/...` mp4 for hero mosaic (muted, loop). */
+  videoSrc?: string;
 }
 
 export interface FunnelBonusPublic {
@@ -224,10 +226,26 @@ export const funnelPinterestContent = {
     statusLine: "Auto-posting active",
   },
   visualCards: [
-    { dayLabel: "Day 1 · Motivation", statLabel: "♥ 142 saves" },
-    { dayLabel: "Day 2 · Business", statLabel: "♥ 98 saves" },
-    { dayLabel: "Day 3 · Lifestyle", statLabel: "♥ 211 saves" },
-    { dayLabel: "Day 4 · Finance", statLabel: "♥ 76 saves" },
+    {
+      dayLabel: "Day 1 · Dedication",
+      statLabel: "♥ 142 saves",
+      videoSrc: "/assets/426.mp4",
+    },
+    {
+      dayLabel: "Day 2 · Build in silence",
+      statLabel: "♥ 98 saves",
+      videoSrc: "/assets/768.mp4",
+    },
+    {
+      dayLabel: "Day 3 · Freedom",
+      statLabel: "♥ 211 saves",
+      videoSrc: "/assets/video-756.mp4",
+    },
+    {
+      dayLabel: "Day 4 · Modern mindset",
+      statLabel: "♥ 76 saves",
+      videoSrc: "/assets/777.mp4",
+    },
   ] as const,
   heroVisualPinsClassSuffix: "" as const,
 
@@ -421,10 +439,26 @@ export const funnelYoutubeContent = {
     statusLine: "Auto-publishing active",
   },
   visualCards: [
-    { dayLabel: "Short 1 · Motivation", statLabel: "▶ 12k views" },
-    { dayLabel: "Short 2 · Business", statLabel: "▶ 8.4k views" },
-    { dayLabel: "Short 3 · Lifestyle", statLabel: "▶ 19k views" },
-    { dayLabel: "Short 4 · Finance", statLabel: "▶ 5.2k views" },
+    {
+      dayLabel: "Short 1 · Dedication",
+      statLabel: "▶ 12k views",
+      videoSrc: "/assets/426.mp4",
+    },
+    {
+      dayLabel: "Short 2 · Build in silence",
+      statLabel: "▶ 8.4k views",
+      videoSrc: "/assets/768.mp4",
+    },
+    {
+      dayLabel: "Short 3 · Freedom",
+      statLabel: "▶ 19k views",
+      videoSrc: "/assets/video-756.mp4",
+    },
+    {
+      dayLabel: "Short 4 · Modern mindset",
+      statLabel: "▶ 5.2k views",
+      videoSrc: "/assets/777.mp4",
+    },
   ] as const,
 
   heroVisualPinsClassSuffix: " pin-yt" as const,
