@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 155" width="500" height="155">
+  <rect x="8" y="12" width="132" height="132" rx="26" ry="26" fill="#E49E24"/>
+  <polygon points="52,42 52,102 108,72" fill="white"/>
+  <text font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="74" font-weight="900">
+    <tspan x="152" y="114" fill="#FFFFFF">Quot</tspan><tspan fill="#E49E24">Vid</tspan>
+  </text>
+</svg>

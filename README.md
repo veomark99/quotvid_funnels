@@ -19,17 +19,15 @@ npm run lint     # ESLint
 
 Copy `.env.example` to `.env.local` and fill values. The backend will require **CORS** for this origin plus a **server-to-server secret** (`FUNNEL_API_SECRET`) on funnel APIs.
 
-## Routes (initial)
+## Routes
 
-| Path | Purpose |
-|------|---------|
-| `/` | Hub / dev index |
-| `/f/pinterest` | Pinterest funnel — styles in `src/app/f/pinterest/pinterest-funnel.css` |
-| `/f/youtube` | YouTube funnel — styles in `src/app/f/youtube/youtube-funnel.css` |
+| Path | Behavior |
+|------|----------|
+| `/` | **404** — root is not listed as a funnel index; share only direct funnel URLs. |
+| `/f/pinterest`, `/f/youtube`, … | Acquisition funnels — styles per route in `src/app/f/<slug>/` |
+| Anything else | Branded **404** (`src/app/not-found.tsx`). |
 
-Each funnel keeps **its own** scoped stylesheet and optional `layout.tsx`; shared `/f` typography lives in `src/app/f/layout.tsx`.
-
-Copy & layout live in `src/components/funnel/AcquisitionFunnel.tsx` + `src/funnels/funnel-models.tsx`.
+Each funnel keeps its own scoped stylesheet + `layout.tsx`; shared `/f` typography is in `src/app/f/layout.tsx`. Copy & `AcquisitionFunnel` live in `src/components/funnel/` + `src/funnels/funnel-models.tsx`.
 
 ## Next steps (with backend)
 
