@@ -83,6 +83,7 @@
   .logo-wrap {
     margin-bottom: 32px;
   }
+  .logo-wrap img,
   .logo-wrap svg {
     height: 44px;
     width: auto;

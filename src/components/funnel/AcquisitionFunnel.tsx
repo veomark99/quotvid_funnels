@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   useCallback,
   useEffect,
@@ -75,27 +76,6 @@ function IconLockSmall() {
         stroke="#8896A8"
         strokeWidth={1}
       />
-    </svg>
-  );
-}
-
-function LogoQuotVid() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 175" aria-label="QuotVid">
-      <title>QuotVid</title>
-      <rect x={10} y={10} width={150} height={150} rx={28} fill="#E49E24" />
-      <polygon points="60,44 60,116 126,80" fill="black" />
-      <text
-        fontFamily="Arial Black,Arial,Helvetica,sans-serif"
-        fontSize={115}
-        fontWeight={900}
-        letterSpacing={-2}
-      >
-        <tspan x={175} y={138} fill="#111111">
-          Quot
-        </tspan>
-        <tspan fill="#E49E24">Vid</tspan>
-      </text>
     </svg>
   );
 }
@@ -409,7 +389,14 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
 
       <div className="hero">
         <div className="logo-wrap fu fu1">
-          <LogoQuotVid />
+          <Image
+            src="/assets/quotvid_black_logo.svg"
+            alt="QuotVid"
+            width={500}
+            height={155}
+            priority
+            className="h-11 w-auto max-w-[min(100%,280px)] object-contain object-left"
+          />
         </div>
 
         <div className="eyebrow fu fu2">
