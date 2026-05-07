@@ -5,7 +5,10 @@ export type FunnelSlug = "pinterest" | "youtube";
 export interface FunnelVisualCard {
   dayLabel: string;
   statLabel: string;
-  /** Optional `/assets/...` mp4 for hero mosaic (muted, loop). */
+  /**
+   * Hero mosaic mp4 (muted, loop): absolute URLs (e.g. media CDN) or `/assets/...`.
+   * With `NEXT_PUBLIC_FUNNEL_VIDEO_CDN_BASE`, `/assets/foo.mp4` resolves to `{base}/foo.mp4`.
+   */
   videoSrc?: string;
 }
 
@@ -229,22 +232,22 @@ export const funnelPinterestContent = {
     {
       dayLabel: "Day 1 · Dedication",
       statLabel: "♥ 142 saves",
-      videoSrc: "/assets/426.mp4",
+      videoSrc: "https://media.quotvid.com/videos/49/426.mp4",
     },
     {
       dayLabel: "Day 2 · Build in silence",
       statLabel: "♥ 98 saves",
-      videoSrc: "/assets/768.mp4",
+      videoSrc: "https://media.quotvid.com/videos/49/768.mp4",
     },
     {
       dayLabel: "Day 3 · Freedom",
       statLabel: "♥ 211 saves",
-      videoSrc: "/assets/video-756.mp4",
+      videoSrc: "https://media.quotvid.com/videos/49/777.mp4",
     },
     {
       dayLabel: "Day 4 · Modern mindset",
       statLabel: "♥ 76 saves",
-      videoSrc: "/assets/777.mp4",
+      videoSrc: "https://media.quotvid.com/videos/49/827.mp4",
     },
   ] as const,
   heroVisualPinsClassSuffix: "" as const,
@@ -442,22 +445,22 @@ export const funnelYoutubeContent = {
     {
       dayLabel: "Short 1 · Dedication",
       statLabel: "▶ 12k views",
-      videoSrc: "/assets/426.mp4",
+      videoSrc: "https://media.quotvid.com/videos/49/426.mp4",
     },
     {
       dayLabel: "Short 2 · Build in silence",
       statLabel: "▶ 8.4k views",
-      videoSrc: "/assets/768.mp4",
+      videoSrc: "https://media.quotvid.com/videos/49/768.mp4",
     },
     {
       dayLabel: "Short 3 · Freedom",
       statLabel: "▶ 19k views",
-      videoSrc: "/assets/video-756.mp4",
+      videoSrc: "https://media.quotvid.com/videos/49/777.mp4",
     },
     {
       dayLabel: "Short 4 · Modern mindset",
       statLabel: "▶ 5.2k views",
-      videoSrc: "/assets/777.mp4",
+      videoSrc: "https://media.quotvid.com/videos/49/827.mp4",
     },
   ] as const,
 

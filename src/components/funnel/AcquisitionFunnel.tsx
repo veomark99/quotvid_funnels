@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import type { FunnelContentModel, FunnelSlug } from "@/funnels/funnel-models";
+import { resolveFunnelVideoSrc } from "@/lib/funnel-video";
 
 const CTA_IDS = ["cta1", "cta2", "cta3"] as const;
 
@@ -472,7 +473,8 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
           </div>
           <div className="visual-pins">
             {model.visualCards.map((c, i) => {
-              const hasVideo = Boolean(c.videoSrc);
+              const videoUrl = resolveFunnelVideoSrc(c.videoSrc);
+              const hasVideo = Boolean(videoUrl);
               return (
                 <div key={i} className="pin">
                   <div
@@ -484,7 +486,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
                       <>
                         <video
                           className="pin-video"
-                          src={c.videoSrc}
+                          src={videoUrl}
                           autoPlay
                           muted
                           loop
