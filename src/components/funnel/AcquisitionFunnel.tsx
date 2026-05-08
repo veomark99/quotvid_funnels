@@ -153,6 +153,8 @@ function FunnelCtaBlock({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [showSignInLink, setShowSignInLink] = useState(false);
+  const [isShaking, setIsShaking] = useState(false);
+  const formCardRef = useRef<HTMLDivElement>(null);
 
   const panelRef = useRef<HTMLDivElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -225,6 +227,11 @@ function FunnelCtaBlock({
       return;
     }
 
+    const triggerShake = () => {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+    };
+
     setApiError(null);
     setShowSignInLink(false);
     setIsSubmitting(true);
@@ -253,6 +260,7 @@ function FunnelCtaBlock({
             : (typeof detail === "string" ? detail : "Something went wrong. Please try again.");
         setApiError(msg);
         if (code === "user_exists") setShowSignInLink(true);
+        triggerShake();
         return;
       }
 
@@ -260,6 +268,7 @@ function FunnelCtaBlock({
       onSubmitSuccess();
     } catch {
       setApiError("Network error. Please check your connection and try again.");
+      triggerShake();
     } finally {
       setIsSubmitting(false);
     }
@@ -299,7 +308,7 @@ function FunnelCtaBlock({
         className={`inline-form-panel ${panelIsOpen ? "open" : ""}`}
         id={`panel-${ctaDomId}`}
       >
-        <div className="form-card">
+        <div ref={formCardRef} className={`form-card${isShaking ? " form-card--shake" : ""}`}>
           {!success ? (
             <div className="form-inner-state">
               <div className="form-bonuses">
@@ -403,7 +412,7 @@ function FunnelCtaBlock({
                 </span>
               </button>
               {apiError && (
-                <div className="qf-form-api-error" style={{ marginTop: 8, textAlign: "center" }}>
+                <div className="qf-form-api-error">
                   <p className="qf-form-api-error-msg">{apiError}</p>
                   {showSignInLink && (
                     <a
@@ -425,10 +434,25 @@ function FunnelCtaBlock({
           ) : (
             <div className="success-state show">
               <div className="success-icon">✓</div>
-              <h2>{model.successTitle}</h2>
-              <p>{model.successBody1}</p>
-              <p>{model.successBody2}</p>
-              <p className="s-hi">{model.successHighlight}</p>
+              <h2>Your account is ready — check your inbox</h2>
+              <ul className="success-steps">
+                <li>
+                  <span className="success-step-num">1</span>
+                  <span>We&apos;ve created your account. A secure link has been sent to your email.</span>
+                </li>
+                <li>
+                  <span className="success-step-num">2</span>
+                  <span>Open the email and click the link to <strong>set your password</strong>.</span>
+                </li>
+                <li>
+                  <span className="success-step-num">3</span>
+                  <span>Log in and connect your {funnelSlug.charAt(0).toUpperCase() + funnelSlug.slice(1)} account to start your free trial.</span>
+                </li>
+              </ul>
+              <div className="success-security">
+                <span>🔒</span>
+                <span>A password keeps your account and content secure</span>
+              </div>
               <p className="s-note">{model.successSpamNote}</p>
             </div>
           )}
