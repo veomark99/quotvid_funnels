@@ -28,7 +28,11 @@ export function PinterestScarcitySection({
   onOpenPrimaryCta,
 }: PinterestMarketingProps) {
   return (
-    <section className="qf-section qf-scarcity-section" aria-labelledby="qf-scarcity-heading">
+    <section
+      className="qf-section qf-scarcity-section"
+      data-qf-reveal
+      aria-labelledby="qf-scarcity-heading"
+    >
       <div className="qf-container qf-scarcity-inner">
         <div className="qf-urgency-card">
           <div className="qf-urgency-icon" aria-hidden>
@@ -66,7 +70,11 @@ export function PinterestScarcitySection({
 
 export function PinterestTrendSection() {
   return (
-    <section className="qf-section qf-trend-section" aria-labelledby="qf-trend-heading">
+    <section
+      className="qf-section qf-trend-section"
+      data-qf-reveal
+      aria-labelledby="qf-trend-heading"
+    >
       <div className="qf-container qf-trend-wide">
         <div className="qf-trend-header">
           <span className="qf-emoji-large" aria-hidden>
@@ -120,7 +128,11 @@ export function PinterestTrendSection() {
 
 export function PinterestPainSection() {
   return (
-    <section className="qf-section qf-pain-section" aria-labelledby="qf-pain-h2">
+    <section
+      className="qf-section qf-pain-section"
+      data-qf-reveal
+      aria-labelledby="qf-pain-h2"
+    >
       <div className="qf-container qf-narrow qf-pain-inner">
         <h2 id="qf-pain-h2">You Know Daily Posting Grows Your Pinterest</h2>
         <h3 className="qf-pain-sub">But you haven&apos;t posted in weeks.</h3>
@@ -162,7 +174,11 @@ export function PinterestSocialProofSection({
   onOpenPrimaryCta,
 }: PinterestMarketingProps) {
   return (
-    <section className="qf-section qf-social-section" aria-labelledby="qf-social-heading">
+    <section
+      className="qf-section qf-social-section"
+      data-qf-reveal
+      aria-labelledby="qf-social-heading"
+    >
       <div className="qf-container qf-social-wide">
         <div className="qf-section-header qf-center">
           <h2 id="qf-social-heading">Real Results From Real Pinterest Creators</h2>
@@ -261,7 +277,11 @@ export function PinterestFeaturesSection({
   onOpenPrimaryCta,
 }: PinterestMarketingProps) {
   return (
-    <section className="qf-section qf-features-section" aria-labelledby="qf-features-heading">
+    <section
+      className="qf-section qf-features-section"
+      data-qf-reveal
+      aria-labelledby="qf-features-heading"
+    >
       <div className="qf-container qf-features-wide">
         <h2 id="qf-features-heading" className="qf-features-h2 qf-center">
           Everything You Get
@@ -375,7 +395,11 @@ export function PinterestFaqSection({
   onOpenPrimaryCta,
 }: PinterestMarketingProps) {
   return (
-    <section className="qf-section qf-faq-section" aria-labelledby="qf-faq-heading">
+    <section
+      className="qf-section qf-faq-section"
+      data-qf-reveal
+      aria-labelledby="qf-faq-heading"
+    >
       <div className="qf-container qf-narrow">
         <h2 id="qf-faq-heading" className="qf-center">
           Common Questions
@@ -402,6 +426,7 @@ export function PinterestGuaranteeStrip() {
   return (
     <section
       className="qf-section qf-guarantee-section"
+      data-qf-reveal
       aria-labelledby="qf-guarantee-heading"
     >
       <div className="qf-container qf-narrow">
@@ -422,7 +447,11 @@ export function PinterestGuaranteeStrip() {
 
 export function PinterestFounderSection() {
   return (
-    <section className="qf-section qf-founder-section" aria-labelledby="qf-founder-heading">
+    <section
+      className="qf-section qf-founder-section"
+      data-qf-reveal
+      aria-labelledby="qf-founder-heading"
+    >
       <div className="qf-container qf-narrow">
         <div className="qf-founder-card">
           <div className="qf-founder-visual">

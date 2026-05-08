@@ -404,19 +404,12 @@ function FunnelCtaBlock({
                 </span>
               </button>
               {apiError && (
-                <div style={{ marginTop: 8, textAlign: "center" }}>
-                  <p style={{ color: "#DC2626", fontSize: 13 }}>{apiError}</p>
+                <div className="qf-form-api-error" style={{ marginTop: 8, textAlign: "center" }}>
+                  <p className="qf-form-api-error-msg">{apiError}</p>
                   {showSignInLink && (
                     <a
                       href={`${process.env.NEXT_PUBLIC_APP_URL ?? "https://app.quotvid.com"}/auth/signin`}
-                      style={{
-                        display: "inline-block",
-                        marginTop: 6,
-                        fontSize: 13,
-                        color: "#E2A128",
-                        textDecoration: "underline",
-                        fontWeight: 600,
-                      }}
+                      className="qf-form-signin-link"
                     >
                       Sign in to your account →
                     </a>
@@ -454,8 +447,33 @@ export interface AcquisitionFunnelProps {
 export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps) {
   const [openCtaId, setOpenCtaId] = useState<string | null>(null);
   const [submissionLocked, setSubmissionLocked] = useState(false);
+  const motionRootRef = useRef<HTMLDivElement>(null);
 
   const isPinterest = funnelSlug === "pinterest";
+
+  useEffect(() => {
+    const root = motionRootRef.current;
+    if (!root) return;
+    if (typeof window.matchMedia !== "function") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const targets = root.querySelectorAll<HTMLElement>("[data-qf-reveal]");
+    if (!targets.length) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("qf-revealed");
+          io.unobserve(entry.target);
+        }
+      },
+      { root: null, rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
+    );
+
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
   const toggleCta = useCallback((id: string) => {
     setOpenCtaId((prev) => (prev === id ? null : id));
@@ -476,7 +494,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
   }, []);
 
   return (
-    <>
+    <div ref={motionRootRef}>
       <div className="urgency-bar">
         <IconClock />
         <strong>{model.urgencyStrong}</strong>
@@ -539,35 +557,11 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
                 <div className="visual-bar-dot" style={{ background: "#FF5F57" }} />
                 <div className="visual-bar-dot" style={{ background: "#FFBD2E" }} />
                 <div className="visual-bar-dot" style={{ background: "#28C840" }} />
-                <span
-                  style={{
-                    marginLeft: 10,
-                    fontSize: 12,
-                    color: "var(--yf-bar-muted)",
-                  }}
-                >
+                <span className="qf-visual-bar-url">
                   {model.visualChrome.barUrl}
                 </span>
-                <span
-                  style={{
-                    marginLeft: "auto",
-                    fontSize: 11,
-                    color: "#4ade80",
-                    fontWeight: 600,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 5,
-                  }}
-                >
-                  <span
-                    style={{
-                      width: 7,
-                      height: 7,
-                      borderRadius: "50%",
-                      background: "#4ade80",
-                      display: "inline-block",
-                    }}
-                  />
+                <span className="qf-visual-bar-status qf-visual-bar-status--yt">
+                  <span className="qf-visual-bar-status-dot qf-visual-bar-status-dot--yt" aria-hidden />
                   {model.visualChrome.statusLine}
                 </span>
               </div>
@@ -591,35 +585,9 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
               <div className="visual-bar-dot" style={{ background: "#FF5F57" }} />
               <div className="visual-bar-dot" style={{ background: "#FFBD2E" }} />
               <div className="visual-bar-dot" style={{ background: "#28C840" }} />
-              <span
-                style={{
-                  marginLeft: 10,
-                  fontSize: 12,
-                  color: "var(--text-muted)",
-                }}
-              >
-                {model.visualChrome.barUrl}
-              </span>
-              <span
-                style={{
-                  marginLeft: "auto",
-                  fontSize: 11,
-                  color: "var(--green)",
-                  fontWeight: 600,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 5,
-                }}
-              >
-                <span
-                  style={{
-                    width: 7,
-                    height: 7,
-                    borderRadius: "50%",
-                    background: "var(--green)",
-                    display: "inline-block",
-                  }}
-                />
+              <span className="qf-visual-bar-url">{model.visualChrome.barUrl}</span>
+              <span className="qf-visual-bar-status">
+                <span className="qf-visual-bar-status-dot" aria-hidden />
                 {model.visualChrome.statusLine}
               </span>
             </div>
@@ -637,7 +605,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
       {isPinterest ? (
         <PinterestPainSection />
       ) : (
-      <div className="problem-bg">
+      <div className="problem-bg" data-qf-reveal>
         <div className="problem-inner">
           <div className="label">{model.problemLabel}</div>
           {model.problemBlocks.map((block, bi) => (
@@ -666,7 +634,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
         </>
       )}
 
-      <div className="section tight" style={{ textAlign: "center" }}>
+      <div className="section tight" style={{ textAlign: "center" }} data-qf-reveal>
         <div className="label center">{model.solutionEyebrow}</div>
         <div className="h2 center">
           {model.solutionTitleLeading}
@@ -678,7 +646,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
 
       <hr />
 
-      <div className="section">
+      <div className="section" data-qf-reveal>
         <div className="label">{model.stepsEyebrow}</div>
         <div className="h2">{model.stepsTitle}</div>
         <div className="steps">
@@ -716,7 +684,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
 
       <hr />
 
-      <div className="bonuses-bg">
+      <div className="bonuses-bg" data-qf-reveal>
         <div className="bonus-header">
           <div className="bonus-ribbon">{model.bonusesRibbon}</div>
           <div className="h2 center">
@@ -751,7 +719,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
 
       {isPinterest && <PinterestFeaturesSection onOpenPrimaryCta={openPrimaryCta} />}
 
-      <div className="section tight">
+      <div className="section tight" data-qf-reveal>
         <div className="label">{model.outcomeEyebrow}</div>
         <div className="h2">{model.outcomeTitle}</div>
         <ul className="outcome-list">
@@ -802,6 +770,6 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
