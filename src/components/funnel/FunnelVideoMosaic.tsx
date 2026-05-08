@@ -3,15 +3,23 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FunnelVisualCard } from "@/funnels/funnel-models";
 import { resolveFunnelVideoSrc } from "@/lib/funnel-video";
+import {
+  PinterestPinVideoChrome,
+  YoutubeShortsVideoChrome,
+} from "@/components/funnel/FunnelVideoPlatformChrome";
+
+type FunnelVideoPlatformId = "youtube" | "pinterest";
 
 function PinSlide({
   c,
   hasVideo,
   videoUrl,
+  platform,
 }: {
   c: FunnelVisualCard;
   hasVideo: boolean;
   videoUrl?: string;
+  platform: FunnelVideoPlatformId;
 }) {
   return (
     <div className="pin">
@@ -30,6 +38,11 @@ function PinSlide({
               preload="metadata"
               aria-hidden
             />
+            {platform === "youtube" ? (
+              <YoutubeShortsVideoChrome />
+            ) : (
+              <PinterestPinVideoChrome />
+            )}
             <div className="pin-img-content">
               <div className="pin-auto">✦ Auto</div>
               <div className="pin-label">{c.dayLabel}</div>
@@ -61,6 +74,8 @@ export function FunnelVideoMosaic({
   heroVisualPinsClassSuffix,
   carouselAriaLabel = "Example videos",
 }: FunnelVideoMosaicProps) {
+  const platform: FunnelVideoPlatformId =
+    heroVisualPinsClassSuffix.includes("pin-yt") ? "youtube" : "pinterest";
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeDot, setActiveDot] = useState(0);
 
@@ -102,6 +117,7 @@ export function FunnelVideoMosaic({
               c={c}
               hasVideo={hasVideo}
               videoUrl={videoUrl}
+              platform={platform}
             />
           );
         })}
@@ -126,6 +142,7 @@ export function FunnelVideoMosaic({
                   c={c}
                   hasVideo={hasVideo}
                   videoUrl={videoUrl}
+                  platform={platform}
                 />
               </div>
             );

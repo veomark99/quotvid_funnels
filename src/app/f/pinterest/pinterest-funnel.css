@@ -248,6 +248,7 @@
   .pin-img--video {
     padding: 0;
     isolation: isolate;
+    container-type: inline-size;
   }
 
   .pin-img--video .pin-video {
@@ -258,6 +259,52 @@
     object-fit: cover;
     z-index: 0;
     pointer-events: none;
+  }
+
+  /* Pinterest-style pin overlay (decorative) */
+  .qf-pin-video-chrome {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 8px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .qf-pin-video-chrome-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: #111;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
+  }
+
+  .qf-pin-save-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: #e60023;
+    color: #fff;
+    font-size: clamp(9px, 3.2cqi, 12px);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    box-shadow: 0 2px 10px rgba(230, 0, 35, 0.35);
+    border: none;
   }
 
   .pin-img-content {
@@ -283,6 +330,10 @@
   .pin-img--video .pin-label {
     color: rgba(255, 255, 255, 0.92);
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  }
+
+  .pin-img--video .pin-img-content {
+    z-index: 3;
   }
 
   .pin-yt .pin-img-content {

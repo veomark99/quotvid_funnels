@@ -249,6 +249,7 @@
   .pin-img--video {
     padding: 0;
     isolation: isolate;
+    container-type: inline-size;
   }
 
   .pin-img--video .pin-video {
@@ -259,6 +260,128 @@
     object-fit: cover;
     z-index: 0;
     pointer-events: none;
+  }
+
+  /* Decorative Shorts-style rail (non-interactive) */
+  .qf-yt-shorts-chrome {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .qf-yt-shorts-brand {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 5px 6px 6px;
+    border-radius: 8px;
+    background: rgba(15, 15, 15, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    max-width: 42%;
+  }
+
+  .qf-yt-shorts-brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #fff;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 800;
+  }
+
+  .qf-yt-shorts-brand-name {
+    font-size: clamp(7px, 2.8cqi, 9px);
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  .qf-yt-shorts-rail {
+    position: absolute;
+    right: clamp(3px, 1.5cqi, 8px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(5px, 2cqi, 10px);
+    padding-bottom: 4px;
+  }
+
+  .qf-yt-shorts-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    color: #fff;
+  }
+
+  .qf-yt-shorts-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(26px, 11cqi, 36px);
+    height: clamp(26px, 11cqi, 36px);
+    border-radius: 50%;
+    background: rgba(32, 32, 32, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  .qf-yt-shorts-action-btn svg {
+    width: clamp(14px, 5.5cqi, 18px);
+    height: clamp(14px, 5.5cqi, 18px);
+    opacity: 0.95;
+  }
+
+  .qf-yt-shorts-action-label {
+    font-size: clamp(6px, 2.4cqi, 9px);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+    line-height: 1.1;
+    text-align: center;
+    max-width: 52px;
+  }
+
+  .qf-yt-shorts-avatar {
+    width: clamp(26px, 11cqi, 36px);
+    height: clamp(26px, 11cqi, 36px);
+    border-radius: 8px;
+    margin-top: 2px;
+    background: linear-gradient(145deg, #334155 0%, #0f172a 100%);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .qf-yt-shorts-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.12);
+    z-index: 4;
+  }
+
+  .qf-yt-shorts-progress-fill {
+    display: block;
+    height: 100%;
+    width: 38%;
+    background: #ff0000;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.45);
   }
 
   .pin-img-content {
@@ -284,6 +407,10 @@
   .pin-img--video .pin-label {
     color: rgba(255, 255, 255, 0.92);
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  }
+
+  .pin-img--video .pin-img-content {
+    z-index: 3;
   }
 
   .pin-yt .pin-img-content {
