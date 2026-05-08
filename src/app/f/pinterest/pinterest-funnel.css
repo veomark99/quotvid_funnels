@@ -974,6 +974,40 @@
     position: relative;
     overflow: hidden;
   }
+  .btn-submit-inner {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .qf-submit-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: qfSubmitSpin 0.65s linear infinite;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+  @keyframes qfSubmitSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .btn-submit--loading {
+    cursor: wait;
+    opacity: 1;
+  }
+  .btn-submit:disabled {
+    cursor: wait;
+  }
+  .btn-submit--loading:hover {
+    transform: none;
+    opacity: 1;
+  }
   .btn-submit::after {
     content: "";
     position: absolute;

@@ -17,7 +17,7 @@ npm run lint     # ESLint
 
 ## Environment
 
-Copy `.env.example` to `.env.local` and fill values. The backend will require **CORS** for this origin plus a **server-to-server secret** (`FUNNEL_API_SECRET`) on funnel APIs.
+Copy `.env.example` to `.env.local` and fill values. For the live form you need **`NEXT_PUBLIC_API_URL`** pointing at the API origin (e.g. `https://api.quotvid.com`). The API must allow your funnel origin via **CORS** (e.g. `CORS_ALLOWED_ORIGINS` or the default `*.quotvid.com` regex on the backend). No shared secret is required for the current public signup endpoint.
 
 ## Routes
 

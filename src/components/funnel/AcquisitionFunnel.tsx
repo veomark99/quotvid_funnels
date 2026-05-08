@@ -92,6 +92,13 @@ function IconLockSmall() {
   );
 }
 
+/** Inline spinner for submit button while funnel POST is in flight */
+function SubmitSpinner() {
+  return (
+    <span className="qf-submit-spinner" aria-hidden />
+  );
+}
+
 function IconShieldGold() {
   return (
     <svg width={20} height={20} viewBox="0 0 20 20" fill="none" aria-hidden>
@@ -376,12 +383,21 @@ function FunnelCtaBlock({
 
               <button
                 type="button"
-                className="btn-submit"
+                className={`btn-submit${isSubmitting ? " btn-submit--loading" : ""}`}
                 onClick={() => { void handleSubmit(); }}
                 disabled={isSubmitting}
-                style={{ opacity: isSubmitting ? 0.7 : 1 }}
+                aria-busy={isSubmitting}
               >
-                {isSubmitting ? "Sending…" : model.submitButtonLabel}
+                <span className="btn-submit-inner">
+                  {isSubmitting ? (
+                    <>
+                      <SubmitSpinner />
+                      <span>Sending…</span>
+                    </>
+                  ) : (
+                    <span>{model.submitButtonLabel}</span>
+                  )}
+                </span>
               </button>
               {apiError && (
                 <p style={{ color: "#DC2626", fontSize: 13, marginTop: 8, textAlign: "center" }}>
