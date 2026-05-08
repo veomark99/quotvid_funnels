@@ -230,8 +230,7 @@ function FunnelCtaBlock({
     setIsSubmitting(true);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
-      const res = await fetch(`${apiUrl}/api/funnel/signup`, {
+      const res = await fetch(`/api/funnel/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
