@@ -438,7 +438,7 @@ export const funnelYoutubeContent = {
   ] as const,
 
   visualChrome: {
-    barUrl: "youtube.com / your-channel",
+    barUrl: "youtube.com/your-channel",
     statusLine: "Auto-publishing active",
   },
   visualCards: [
@@ -461,6 +461,16 @@ export const funnelYoutubeContent = {
       dayLabel: "Short 4 · Modern mindset",
       statLabel: "▶ 5.2k views",
       videoSrc: "https://media.quotvid.com/videos/49/827.mp4",
+    },
+    {
+      dayLabel: "Short 5 · Show up daily",
+      statLabel: "▶ 6.8k views",
+      videoSrc: "https://media.quotvid.com/videos/49/426.mp4",
+    },
+    {
+      dayLabel: "Short 6 · Stay consistent",
+      statLabel: "▶ 11k views",
+      videoSrc: "https://media.quotvid.com/videos/49/777.mp4",
     },
   ] as const,
 

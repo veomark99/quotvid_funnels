@@ -52,11 +52,14 @@ function PinSlide({
 interface FunnelVideoMosaicProps {
   visualCards: readonly FunnelVisualCard[];
   heroVisualPinsClassSuffix: string;
+  /** e.g. "Example YouTube Shorts" — used for carousel region accessibility */
+  carouselAriaLabel?: string;
 }
 
 export function FunnelVideoMosaic({
   visualCards,
   heroVisualPinsClassSuffix,
+  carouselAriaLabel = "Example videos",
 }: FunnelVideoMosaicProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeDot, setActiveDot] = useState(0);
@@ -109,7 +112,7 @@ export function FunnelVideoMosaic({
           ref={trackRef}
           className="qf-carousel-track"
           role="region"
-          aria-label="Example Pinterest videos"
+          aria-label={carouselAriaLabel}
         >
           {visualCards.map((c, i) => {
             const videoUrl = resolveFunnelVideoSrc(c.videoSrc);

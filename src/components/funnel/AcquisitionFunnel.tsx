@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 import type { FunnelContentModel, FunnelSlug } from "@/funnels/funnel-models";
-import { resolveFunnelVideoSrc } from "@/lib/funnel-video";
 import { FunnelVideoMosaic } from "@/components/funnel/FunnelVideoMosaic";
 import {
   PinterestFaqSection,
@@ -510,89 +509,57 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
           />
         </div>
 
-        {!isPinterest && (
-        <div className={`hero-visual fu fu6${model.heroVisualPinsClassSuffix}`}>
-          <div className="visual-bar">
-            <div className="visual-bar-dot" style={{ background: "#FF5F57" }} />
-            <div className="visual-bar-dot" style={{ background: "#FFBD2E" }} />
-            <div className="visual-bar-dot" style={{ background: "#28C840" }} />
-            <span
-              style={{
-                marginLeft: 10,
-                fontSize: 12,
-                color: "var(--text-muted)",
-              }}
-            >
-              {model.visualChrome.barUrl}
-            </span>
-            <span
-              style={{
-                marginLeft: "auto",
-                fontSize: 11,
-                color: "var(--green)",
-                fontWeight: 600,
-                display: "flex",
-                alignItems: "center",
-                gap: 5,
-              }}
-            >
-              <span
-                style={{
-                  width: 7,
-                  height: 7,
-                  borderRadius: "50%",
-                  background: "var(--green)",
-                  display: "inline-block",
-                }}
-              />
-              {model.visualChrome.statusLine}
-            </span>
-          </div>
-          <div className="visual-pins">
-            {model.visualCards.map((c, i) => {
-              const videoUrl = resolveFunnelVideoSrc(c.videoSrc);
-              const hasVideo = Boolean(videoUrl);
-              return (
-                <div key={i} className="pin">
-                  <div
-                    className={
-                      hasVideo ? "pin-img pin-img--video" : "pin-img"
-                    }
-                  >
-                    {hasVideo ? (
-                      <>
-                        <video
-                          className="pin-video"
-                          src={videoUrl}
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                          aria-hidden
-                        />
-                        <div className="pin-img-content">
-                          <div className="pin-auto">✦ Auto</div>
-                          <div className="pin-label">{c.dayLabel}</div>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="pin-auto">✦ Auto</div>
-                        <div className="pin-label">{c.dayLabel}</div>
-                      </>
-                    )}
-                  </div>
-                  <div className="pin-footer">
-                    <div className="pin-stat">{c.statLabel}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        )}
       </div>
+
+      {!isPinterest && (
+        <section className="qf-yt-preview-section fu fu6" aria-label="Example Shorts on your channel">
+          <div className="qf-yt-preview-inner">
+            <div className={`hero-visual hero-visual--youtube-mosaic${model.heroVisualPinsClassSuffix}`}>
+              <div className="visual-bar visual-bar--yt-dark">
+                <div className="visual-bar-dot" style={{ background: "#FF5F57" }} />
+                <div className="visual-bar-dot" style={{ background: "#FFBD2E" }} />
+                <div className="visual-bar-dot" style={{ background: "#28C840" }} />
+                <span
+                  style={{
+                    marginLeft: 10,
+                    fontSize: 12,
+                    color: "var(--yf-bar-muted)",
+                  }}
+                >
+                  {model.visualChrome.barUrl}
+                </span>
+                <span
+                  style={{
+                    marginLeft: "auto",
+                    fontSize: 11,
+                    color: "#4ade80",
+                    fontWeight: 600,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 5,
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 7,
+                      height: 7,
+                      borderRadius: "50%",
+                      background: "#4ade80",
+                      display: "inline-block",
+                    }}
+                  />
+                  {model.visualChrome.statusLine}
+                </span>
+              </div>
+              <FunnelVideoMosaic
+                visualCards={model.visualCards}
+                heroVisualPinsClassSuffix={model.heroVisualPinsClassSuffix}
+                carouselAriaLabel="Swipe to see example Shorts on your channel"
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {isPinterest && (
         <>
@@ -639,6 +606,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
             <FunnelVideoMosaic
               visualCards={model.visualCards}
               heroVisualPinsClassSuffix={model.heroVisualPinsClassSuffix}
+              carouselAriaLabel="Swipe to browse example Pins on your profile"
             />
           </div>
         </>

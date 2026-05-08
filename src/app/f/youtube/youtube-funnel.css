@@ -20,6 +20,7 @@
     --text-sec: #4a5568;
     --text-muted: #8896a8;
     --green: #16a34a;
+    --yf-bar-muted: rgba(226, 232, 240, 0.7);
     --shadow-sm: 0 1px 4px rgba(13, 17, 23, 0.07);
     --shadow-md: 0 4px 18px rgba(13, 17, 23, 0.09);
     --shadow-lg: 0 12px 48px rgba(13, 17, 23, 0.11);
@@ -291,11 +292,6 @@
     padding-bottom: 10px;
   }
 
-  /* YouTube funnel: same tiles, taller aspect */
-  .pin-yt .pin-img {
-    aspect-ratio: 16 / 10;
-    justify-content: space-between;
-  }
   .pin-auto {
     display: inline-flex;
     align-items: center;
@@ -321,6 +317,186 @@
   .pin-stat {
     font-size: 10px;
     color: var(--text-muted);
+  }
+
+  /* Full-width preview band (below hero) — mirrors high-converting “product in context” layouts */
+  .qf-yt-preview-section {
+    width: 100%;
+    background: linear-gradient(
+      168deg,
+      #060809 0%,
+      #0d1118 42%,
+      #080b10 100%
+    );
+    padding: clamp(36px, 6vw, 72px) clamp(16px, 4vw, 28px);
+    border-top: 1px solid rgba(226, 161, 40, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-sizing: border-box;
+  }
+
+  .qf-yt-preview-inner {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-visual--youtube-mosaic.pin-yt {
+    margin-top: 0;
+    width: 100%;
+    max-width: 100%;
+    background: linear-gradient(
+      180deg,
+      rgba(22, 27, 36, 0.97) 0%,
+      rgba(14, 17, 24, 0.98) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(226, 161, 40, 0.12),
+      0 32px 90px rgba(0, 0, 0, 0.55);
+  }
+
+  .visual-bar--yt-dark {
+    background: rgba(30, 35, 46, 0.95);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* 4-column Shorts (portrait); extras scroll via carousel under 768px */
+  .hero-visual--youtube-mosaic .visual-pins--desktop.pin-yt {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 1.9vw, 22px);
+    padding: clamp(18px, 2.8vw, 26px);
+  }
+
+  .hero-visual--youtube-mosaic.pin-yt .pin-img {
+    aspect-ratio: 9 / 16;
+    min-height: 0;
+  }
+
+  .hero-visual--youtube-mosaic .pin:nth-child(5) .pin-img:not(.pin-img--video) {
+    background: linear-gradient(
+      160deg,
+      #ecfeff 0%,
+      rgba(165, 243, 252, 0.45) 100%
+    );
+  }
+  .hero-visual--youtube-mosaic .pin:nth-child(6) .pin-img:not(.pin-img--video) {
+    background: linear-gradient(
+      160deg,
+      #faf5ff 0%,
+      rgba(216, 180, 254, 0.4) 100%
+    );
+  }
+
+  .hero-visual--youtube-mosaic .pin:nth-child(n + 5) .pin-img--video {
+    background: #0d1117;
+  }
+
+  .hero-visual--youtube-mosaic .pin-footer {
+    background: rgba(10, 12, 18, 0.92);
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .hero-visual--youtube-mosaic .pin-stat {
+    color: rgba(203, 213, 225, 0.88);
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .hero-visual--youtube-mosaic .pin-label {
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .hero-visual--youtube-mosaic .pin-auto {
+    background: rgba(226, 161, 40, 0.22);
+    border-color: rgba(226, 161, 40, 0.45);
+    color: #f5d491;
+    font-size: 9px;
+  }
+
+  .qf-video-carousel.pin-yt {
+    display: none;
+    padding: 16px 0 14px;
+  }
+
+  .qf-video-carousel.pin-yt .qf-carousel-track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 4px calc(max(16px, (100% - min(260px, 72vw)) / 2));
+  }
+
+  .qf-video-carousel.pin-yt .qf-carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .qf-video-carousel.pin-yt .qf-carousel-slide {
+    flex: 0 0 min(260px, 72vw);
+    max-width: min(260px, 72vw);
+    scroll-snap-align: center;
+  }
+
+  .qf-video-carousel.pin-yt .qf-carousel-slide .pin {
+    margin: 0 auto;
+    max-width: 100%;
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(15, 18, 26, 0.6);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .qf-video-carousel.pin-yt .qf-carousel-slide .pin-img {
+    aspect-ratio: 9 / 16;
+  }
+
+  .qf-video-carousel.pin-yt .qf-carousel-slide .pin-footer {
+    background: rgba(10, 12, 18, 0.92);
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .qf-video-carousel.pin-yt .qf-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .qf-video-carousel.pin-yt .qf-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    transition:
+      background 0.2s,
+      width 0.2s;
+  }
+
+  .qf-video-carousel.pin-yt .qf-dot--active {
+    background: var(--gold-light);
+    width: 22px;
+    border-radius: 4px;
+  }
+
+  /* Desktop / tablet: only four Shorts in the grid; Shorts 5–6 appear in the mobile carousel */
+  @media (min-width: 769px) {
+    .hero-visual--youtube-mosaic .visual-pins--desktop.pin-yt .pin:nth-child(n + 5) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-visual--youtube-mosaic .visual-pins--desktop.pin-yt {
+      display: none;
+    }
+    .qf-video-carousel.pin-yt {
+      display: block;
+    }
   }
 
   hr {
@@ -1161,13 +1337,6 @@
   }
 
   @media (max-width: 600px) {
-    .visual-pins {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .pin:nth-child(3),
-    .pin:nth-child(4) {
-      display: none;
-    }
     .form-card {
       padding: 22px 16px;
     }
