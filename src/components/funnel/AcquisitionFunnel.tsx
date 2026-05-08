@@ -10,6 +10,17 @@ import {
 } from "react";
 import type { FunnelContentModel, FunnelSlug } from "@/funnels/funnel-models";
 import { resolveFunnelVideoSrc } from "@/lib/funnel-video";
+import { FunnelVideoMosaic } from "@/components/funnel/FunnelVideoMosaic";
+import {
+  PinterestFaqSection,
+  PinterestFeaturesSection,
+  PinterestFounderSection,
+  PinterestGuaranteeStrip,
+  PinterestPainSection,
+  PinterestScarcitySection,
+  PinterestSocialProofSection,
+  PinterestTrendSection,
+} from "@/components/funnel/pinterest-funnel-marketing";
 
 const CTA_IDS = ["cta1", "cta2", "cta3"] as const;
 
@@ -133,6 +144,8 @@ function FunnelCtaBlock({
   const [goal, setGoal] = useState("");
   const [chipsSel, setChipsSel] = useState(() => new Set<string>());
   const [success, setSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const panelRef = useRef<HTMLDivElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -155,7 +168,7 @@ function FunnelCtaBlock({
     (openCtaId === ctaDomId && !success && !submissionLocked);
 
   /** After first successful submit anywhere, freeze all CTAs (matches original locking) */
-  const ctaButtonDisabled = submissionLocked || success;
+  const ctaButtonDisabled = submissionLocked || success || isSubmitting;
 
   useEffect(() => {
     const shouldFocus =
@@ -182,7 +195,7 @@ function FunnelCtaBlock({
     onToggleCta(ctaDomId);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const trimmed = email.trim();
     const at = trimmed.indexOf("@");
     if (!trimmed || at <= 0) {
@@ -205,17 +218,41 @@ function FunnelCtaBlock({
       return;
     }
 
-    const tones = [...chipsSel];
-    console.debug("[funnel submit]", {
-      funnelSlug,
-      email: trimmed,
-      niche,
-      goal,
-      tones,
-    });
+    setApiError(null);
+    setIsSubmitting(true);
 
-    setSuccess(true);
-    onSubmitSuccess();
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
+      const res = await fetch(`${apiUrl}/api/funnel/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: trimmed,
+          platform: funnelSlug,
+          niche,
+          primary_goal: goal,
+          content_tones: [...chipsSel],
+        }),
+      });
+      const data = await res.json() as Record<string, unknown>;
+
+      if (!res.ok) {
+        const detail = data.detail as Record<string, string> | string | undefined;
+        const msg =
+          typeof detail === "object" && detail !== null
+            ? (detail.message ?? "Something went wrong. Please try again.")
+            : (typeof detail === "string" ? detail : "Something went wrong. Please try again.");
+        setApiError(msg);
+        return;
+      }
+
+      setSuccess(true);
+      onSubmitSuccess();
+    } catch {
+      setApiError("Network error. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   /** Losers fade after someone completes a submission (winner stays full contrast) */
@@ -337,9 +374,20 @@ function FunnelCtaBlock({
                 </div>
               </div>
 
-              <button type="button" className="btn-submit" onClick={handleSubmit}>
-                {model.submitButtonLabel}
+              <button
+                type="button"
+                className="btn-submit"
+                onClick={() => { void handleSubmit(); }}
+                disabled={isSubmitting}
+                style={{ opacity: isSubmitting ? 0.7 : 1 }}
+              >
+                {isSubmitting ? "Sending…" : model.submitButtonLabel}
               </button>
+              {apiError && (
+                <p style={{ color: "#DC2626", fontSize: 13, marginTop: 8, textAlign: "center" }}>
+                  {apiError}
+                </p>
+              )}
               <p className="form-micro">{model.formMicro}</p>
               <p className="form-legal">
                 By continuing you agree to our{" "}
@@ -372,12 +420,24 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
   const [openCtaId, setOpenCtaId] = useState<string | null>(null);
   const [submissionLocked, setSubmissionLocked] = useState(false);
 
+  const isPinterest = funnelSlug === "pinterest";
+
   const toggleCta = useCallback((id: string) => {
     setOpenCtaId((prev) => (prev === id ? null : id));
   }, []);
 
   const lockAfterSuccess = useCallback(() => {
     setSubmissionLocked(true);
+  }, []);
+
+  const openPrimaryCta = useCallback(() => {
+    const anchor = document.getElementById("funnel-cta-anchor");
+    anchor?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.setTimeout(() => {
+      document
+        .querySelector<HTMLButtonElement>('button[data-cta="cta1"]')
+        ?.click();
+    }, 280);
   }, []);
 
   return (
@@ -388,7 +448,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
         <span>{model.urgencyRest}</span>
       </div>
 
-      <div className="hero">
+      <div className={isPinterest ? "hero hero--pinterest" : "hero"}>
         <div className="logo-wrap fu fu1">
           <Image
             src="/assets/quotvid_black_logo.svg"
@@ -422,7 +482,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
           ))}
         </div>
 
-        <div className="fu fu5">
+        <div id="funnel-cta-anchor" className="qf-cta-anchor fu fu5">
           <FunnelCtaBlock
             model={model}
             funnelSlug={funnelSlug}
@@ -434,6 +494,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
           />
         </div>
 
+        {!isPinterest && (
         <div className={`hero-visual fu fu6${model.heroVisualPinsClassSuffix}`}>
           <div className="visual-bar">
             <div className="visual-bar-dot" style={{ background: "#FF5F57" }} />
@@ -514,10 +575,64 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
             })}
           </div>
         </div>
+        )}
       </div>
+
+      {isPinterest && (
+        <>
+          <PinterestScarcitySection onOpenPrimaryCta={openPrimaryCta} />
+          <div
+            className={`hero-visual hero-visual--pinterest-mosaic fu fu6${model.heroVisualPinsClassSuffix}`}
+          >
+            <div className="visual-bar">
+              <div className="visual-bar-dot" style={{ background: "#FF5F57" }} />
+              <div className="visual-bar-dot" style={{ background: "#FFBD2E" }} />
+              <div className="visual-bar-dot" style={{ background: "#28C840" }} />
+              <span
+                style={{
+                  marginLeft: 10,
+                  fontSize: 12,
+                  color: "var(--text-muted)",
+                }}
+              >
+                {model.visualChrome.barUrl}
+              </span>
+              <span
+                style={{
+                  marginLeft: "auto",
+                  fontSize: 11,
+                  color: "var(--green)",
+                  fontWeight: 600,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 5,
+                }}
+              >
+                <span
+                  style={{
+                    width: 7,
+                    height: 7,
+                    borderRadius: "50%",
+                    background: "var(--green)",
+                    display: "inline-block",
+                  }}
+                />
+                {model.visualChrome.statusLine}
+              </span>
+            </div>
+            <FunnelVideoMosaic
+              visualCards={model.visualCards}
+              heroVisualPinsClassSuffix={model.heroVisualPinsClassSuffix}
+            />
+          </div>
+        </>
+      )}
 
       <hr />
 
+      {isPinterest ? (
+        <PinterestPainSection />
+      ) : (
       <div className="problem-bg">
         <div className="problem-inner">
           <div className="label">{model.problemLabel}</div>
@@ -538,6 +653,14 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
           ))}
         </div>
       </div>
+      )}
+
+      {isPinterest && (
+        <>
+          <hr />
+          <PinterestTrendSection />
+        </>
+      )}
 
       <div className="section tight" style={{ textAlign: "center" }}>
         <div className="label center">{model.solutionEyebrow}</div>
@@ -583,6 +706,10 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
         </div>
       </div>
 
+      {isPinterest && (
+        <PinterestSocialProofSection onOpenPrimaryCta={openPrimaryCta} />
+      )}
+
       <hr />
 
       <div className="bonuses-bg">
@@ -618,6 +745,8 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
         </div>
       </div>
 
+      {isPinterest && <PinterestFeaturesSection onOpenPrimaryCta={openPrimaryCta} />}
+
       <div className="section tight">
         <div className="label">{model.outcomeEyebrow}</div>
         <div className="h2">{model.outcomeTitle}</div>
@@ -643,6 +772,14 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
             ))}
           </div>
         </div>
+
+        {isPinterest && (
+          <>
+            <PinterestFaqSection onOpenPrimaryCta={openPrimaryCta} />
+            <PinterestFounderSection />
+            <PinterestGuaranteeStrip />
+          </>
+        )}
 
         <div className="cta-banner" style={{ marginTop: 40 }}>
           <h3>
