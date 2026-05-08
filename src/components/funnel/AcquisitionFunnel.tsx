@@ -152,6 +152,7 @@ function FunnelCtaBlock({
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [showSignInLink, setShowSignInLink] = useState(false);
 
   const panelRef = useRef<HTMLDivElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -225,6 +226,7 @@ function FunnelCtaBlock({
     }
 
     setApiError(null);
+    setShowSignInLink(false);
     setIsSubmitting(true);
 
     try {
@@ -244,11 +246,14 @@ function FunnelCtaBlock({
 
       if (!res.ok) {
         const detail = data.detail as Record<string, string> | string | undefined;
+        const code =
+          typeof detail === "object" && detail !== null ? detail.code : undefined;
         const msg =
           typeof detail === "object" && detail !== null
             ? (detail.message ?? "Something went wrong. Please try again.")
             : (typeof detail === "string" ? detail : "Something went wrong. Please try again.");
         setApiError(msg);
+        if (code === "user_exists") setShowSignInLink(true);
         return;
       }
 
@@ -399,9 +404,24 @@ function FunnelCtaBlock({
                 </span>
               </button>
               {apiError && (
-                <p style={{ color: "#DC2626", fontSize: 13, marginTop: 8, textAlign: "center" }}>
-                  {apiError}
-                </p>
+                <div style={{ marginTop: 8, textAlign: "center" }}>
+                  <p style={{ color: "#DC2626", fontSize: 13 }}>{apiError}</p>
+                  {showSignInLink && (
+                    <a
+                      href={`${process.env.NEXT_PUBLIC_APP_URL ?? "https://app.quotvid.com"}/auth/signin`}
+                      style={{
+                        display: "inline-block",
+                        marginTop: 6,
+                        fontSize: 13,
+                        color: "#E2A128",
+                        textDecoration: "underline",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Sign in to your account →
+                    </a>
+                  )}
+                </div>
               )}
               <p className="form-micro">{model.formMicro}</p>
               <p className="form-legal">

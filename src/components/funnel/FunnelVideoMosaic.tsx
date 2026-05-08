@@ -85,7 +85,7 @@ export function FunnelVideoMosaic({
     const slide = track.querySelector<HTMLElement>(".qf-carousel-slide");
     if (!slide) return;
     const slideW = slide.offsetWidth;
-    const gap = 16;
+    const gap = 10;
     const scroll = track.scrollLeft;
     const idx = Math.round(scroll / Math.max(slideW + gap, 1));
     setActiveDot(Math.min(visualCards.length - 1, Math.max(0, idx)));

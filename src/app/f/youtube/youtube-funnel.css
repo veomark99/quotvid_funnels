@@ -25,12 +25,14 @@
     --shadow-md: 0 4px 18px rgba(13, 17, 23, 0.09);
     --shadow-lg: 0 12px 48px rgba(13, 17, 23, 0.11);
     --shadow-gold: 0 6px 28px rgba(226, 161, 40, 0.28);
+    --qf-body: clamp(20px, 1.85vw, 24px);
+    --qf-section-vpad: clamp(56px, 8vw, 96px);
 
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-jakarta), system-ui, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: var(--qf-body);
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -61,7 +63,7 @@
 
   .hero {
     background: var(--bg);
-    padding: 56px 24px 0;
+    padding: clamp(52px, 7vw, 72px) clamp(20px, 4vw, 32px) var(--qf-section-vpad);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -127,9 +129,9 @@
 
   h1 {
     font-family: var(--font-playfair), Georgia, ui-serif, serif;
-    font-size: clamp(34px, 5.5vw, 68px);
+    font-size: clamp(40px, 6.2vw, 88px);
     font-weight: 400;
-    line-height: 1.07;
+    line-height: 1.05;
     letter-spacing: -0.025em;
     color: var(--text);
     max-width: 780px;
@@ -144,9 +146,9 @@
   }
 
   .hero-sub {
-    font-size: clamp(16px, 2.2vw, 20px);
+    font-size: clamp(21px, 2.1vw, 26px);
     color: var(--text-sec);
-    max-width: 520px;
+    max-width: 42rem;
     line-height: 1.6;
     margin-bottom: 10px;
   }
@@ -262,7 +264,14 @@
     pointer-events: none;
   }
 
-  /* Decorative Shorts-style rail (non-interactive) */
+  .pin-yt .pin-img--video .pin-video {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.055),
+      inset 0 -44px 52px rgba(0, 0, 0, 0.44),
+      inset -32px 0 42px rgba(0, 0, 0, 0.18);
+  }
+
+  /* Decorative Shorts-style rail — omit logo overlay (videos already branded) */
   .qf-yt-shorts-chrome {
     position: absolute;
     inset: 0;
@@ -270,100 +279,80 @@
     z-index: 2;
   }
 
-  .qf-yt-shorts-brand {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 5px 6px 6px;
-    border-radius: 8px;
-    background: rgba(15, 15, 15, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    max-width: 42%;
-  }
-
-  .qf-yt-shorts-brand-mark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 4px;
-    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-    color: #fff;
-    font-size: 9px;
-    line-height: 1;
-    font-weight: 800;
-  }
-
-  .qf-yt-shorts-brand-name {
-    font-size: clamp(7px, 2.8cqi, 9px);
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.95);
-    letter-spacing: 0.02em;
-    line-height: 1.1;
-    text-align: center;
-  }
-
   .qf-yt-shorts-rail {
     position: absolute;
-    right: clamp(3px, 1.5cqi, 8px);
-    top: 50%;
-    transform: translateY(-50%);
+    right: clamp(5px, 1.75cqi, 10px);
+    bottom: clamp(52px, 14cqi, 108px);
+    top: auto;
+    transform: none;
+    width: clamp(42px, 15cqi, 54px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(5px, 2cqi, 10px);
-    padding-bottom: 4px;
+    gap: clamp(8px, 2.75cqi, 13px);
   }
 
   .qf-yt-shorts-action {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
+    justify-content: flex-start;
+    gap: clamp(4px, 1.1cqi, 6px);
+    width: 100%;
     color: #fff;
   }
 
   .qf-yt-shorts-action-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: clamp(26px, 11cqi, 36px);
-    height: clamp(26px, 11cqi, 36px);
+    flex-shrink: 0;
+    width: clamp(32px, 12.5cqi, 44px);
+    height: clamp(32px, 12.5cqi, 44px);
     border-radius: 50%;
-    background: rgba(32, 32, 32, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    background: rgba(26, 26, 26, 0.52);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   .qf-yt-shorts-action-btn svg {
-    width: clamp(14px, 5.5cqi, 18px);
-    height: clamp(14px, 5.5cqi, 18px);
-    opacity: 0.95;
+    width: clamp(17px, 6.5cqi, 22px);
+    height: clamp(17px, 6.5cqi, 22px);
+    display: block;
+    opacity: 0.96;
   }
 
   .qf-yt-shorts-action-label {
-    font-size: clamp(6px, 2.4cqi, 9px);
+    display: block;
+    width: 100%;
+    font-size: clamp(7px, 2.75cqi, 10px);
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.92);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
-    line-height: 1.1;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, 0.94);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+    line-height: 1.18;
     text-align: center;
-    max-width: 52px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
   }
 
   .qf-yt-shorts-avatar {
-    width: clamp(26px, 11cqi, 36px);
-    height: clamp(26px, 11cqi, 36px);
-    border-radius: 8px;
+    width: clamp(32px, 12.5cqi, 44px);
+    height: clamp(32px, 12.5cqi, 44px);
+    border-radius: 9px;
     margin-top: 2px;
-    background: linear-gradient(145deg, #334155 0%, #0f172a 100%);
-    border: 2px solid rgba(255, 255, 255, 0.35);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
+    background: linear-gradient(148deg, #3d4a63 0%, #141a26 72%);
+    border: 2px solid rgba(255, 255, 255, 0.42);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
 
   .qf-yt-shorts-progress {
@@ -371,18 +360,21 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.12);
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
     z-index: 4;
+    border-radius: 0 0 2px 2px;
   }
 
   .qf-yt-shorts-progress-fill {
     display: block;
     height: 100%;
-    width: 38%;
-    background: #ff0000;
-    box-shadow: 0 0 8px rgba(255, 0, 0, 0.45);
+    width: 42%;
+    background: linear-gradient(90deg, #ff3838 0%, #cc0000 100%);
+    box-shadow: 0 0 10px rgba(255, 50, 50, 0.35);
+    border-radius: 0 1px 1px 0;
   }
+
 
   .pin-img-content {
     position: relative;
@@ -414,9 +406,11 @@
   }
 
   .pin-yt .pin-img-content {
-    justify-content: space-between;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 6px;
+    padding-top: 16px;
+    padding-bottom: 14px;
   }
 
   .pin-auto {
@@ -455,7 +449,7 @@
       #0d1118 42%,
       #080b10 100%
     );
-    padding: clamp(36px, 6vw, 72px) clamp(16px, 4vw, 28px);
+    padding: var(--qf-section-vpad) clamp(16px, 4vw, 28px);
     border-top: 1px solid rgba(226, 161, 40, 0.14);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     box-sizing: border-box;
@@ -471,23 +465,44 @@
   .hero-visual--youtube-mosaic.pin-yt {
     margin-top: 0;
     width: 100%;
-    max-width: 100%;
+    max-width: min(100%, 1200px);
+    margin-left: auto;
+    margin-right: auto;
+    container-type: inline-size;
     background: linear-gradient(
       180deg,
-      rgba(22, 27, 36, 0.97) 0%,
-      rgba(14, 17, 24, 0.98) 100%
+      rgba(28, 32, 40, 0.55) 0%,
+      rgba(14, 17, 24, 0.72) 100%
     );
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 18px;
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px rgba(226, 161, 40, 0.12),
-      0 32px 90px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.38);
   }
 
   .visual-bar--yt-dark {
     background: rgba(30, 35, 46, 0.95);
     border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Video tiles — no framed “card”; only the Shorts viewport is rounded */
+  .hero-visual--youtube-mosaic .pin {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .hero-visual--youtube-mosaic .pin-img {
+    border-radius: clamp(12px, 3cqi, 15px);
+    overflow: hidden;
+  }
+
+  .hero-visual--youtube-mosaic .pin-footer {
+    background: transparent;
+    border-top: none;
+    padding: 8px 0 0;
   }
 
   /* 4-column Shorts (portrait); extras scroll via carousel under 768px */
@@ -522,19 +537,14 @@
     background: #0d1117;
   }
 
-  .hero-visual--youtube-mosaic .pin-footer {
-    background: rgba(10, 12, 18, 0.92);
-    border-top-color: rgba(255, 255, 255, 0.08);
-  }
-
   .hero-visual--youtube-mosaic .pin-stat {
     color: rgba(203, 213, 225, 0.88);
-    font-size: 11px;
+    font-size: clamp(11px, 2.5cqi, 14px);
     font-weight: 500;
   }
 
   .hero-visual--youtube-mosaic .pin-label {
-    font-size: 11px;
+    font-size: clamp(11px, 2.6cqi, 14px);
     font-weight: 600;
   }
 
@@ -548,16 +558,19 @@
   .qf-video-carousel.pin-yt {
     display: none;
     padding: 16px 0 14px;
+    container-type: inline-size;
+    width: 100%;
   }
 
   .qf-video-carousel.pin-yt .qf-carousel-track {
     display: flex;
-    gap: 16px;
+    gap: 10px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding: 4px calc(max(16px, (100% - min(260px, 72vw)) / 2));
+    padding: 0 12px;
+    scroll-padding-inline: 12px;
   }
 
   .qf-video-carousel.pin-yt .qf-carousel-track::-webkit-scrollbar {
@@ -565,26 +578,32 @@
   }
 
   .qf-video-carousel.pin-yt .qf-carousel-slide {
-    flex: 0 0 min(260px, 72vw);
-    max-width: min(260px, 72vw);
+    flex: 0 0 100cqi;
+    min-width: 100cqi;
+    max-width: 100cqi;
     scroll-snap-align: center;
   }
 
   .qf-video-carousel.pin-yt .qf-carousel-slide .pin {
     margin: 0 auto;
     max-width: 100%;
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(15, 18, 26, 0.6);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
   }
 
   .qf-video-carousel.pin-yt .qf-carousel-slide .pin-img {
     aspect-ratio: 9 / 16;
+    border-radius: clamp(12px, 3cqi, 15px);
+    overflow: hidden;
   }
 
   .qf-video-carousel.pin-yt .qf-carousel-slide .pin-footer {
-    background: rgba(10, 12, 18, 0.92);
-    border-top-color: rgba(255, 255, 255, 0.08);
+    background: transparent;
+    border-top: none;
+    padding: 8px 0 0;
   }
 
   .qf-video-carousel.pin-yt .qf-carousel-dots {
@@ -632,7 +651,7 @@
   }
 
   .section {
-    padding: 64px 24px;
+    padding: var(--qf-section-vpad) clamp(20px, 4vw, 28px);
     max-width: 720px;
     margin: 0 auto;
   }
@@ -654,7 +673,7 @@
 
   .h2 {
     font-family: var(--font-playfair), Georgia, ui-serif, serif;
-    font-size: clamp(26px, 4vw, 42px);
+    font-size: clamp(32px, 4.6vw, 56px);
     font-weight: 400;
     line-height: 1.14;
     color: var(--text);
@@ -671,9 +690,9 @@
     text-align: center;
   }
   .body {
-    font-size: 16px;
+    font-size: 1em;
     color: var(--text-sec);
-    line-height: 1.75;
+    line-height: 1.6;
   }
   .body.center {
     text-align: center;
@@ -683,7 +702,7 @@
     background: var(--bg-alt);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding: 64px 24px;
+    padding: var(--qf-section-vpad) clamp(20px, 4vw, 28px);
   }
   .problem-inner {
     max-width: 640px;
@@ -691,14 +710,14 @@
   }
   .problem-line {
     font-family: var(--font-playfair), Georgia, ui-serif, serif;
-    font-size: clamp(20px, 3.4vw, 32px);
+    font-size: clamp(26px, 3.8vw, 44px);
     color: var(--text);
     line-height: 1.3;
     margin-bottom: 6px;
   }
   .problem-line.dim {
     color: var(--text-muted);
-    font-size: clamp(17px, 2.8vw, 26px);
+    font-size: clamp(22px, 2.95vw, 32px);
   }
   .problem-line.accent-gold {
     color: var(--gold-deep);
@@ -737,13 +756,13 @@
     margin-bottom: 12px;
   }
   .step-card h3 {
-    font-size: 15px;
+    font-size: clamp(1.05em, 1.12em + 0.2vw, 1.2em);
     font-weight: 700;
     color: var(--text);
     margin-bottom: 6px;
   }
   .step-card p {
-    font-size: 13px;
+    font-size: 1em;
     color: var(--text-sec);
     line-height: 1.6;
   }
@@ -752,7 +771,7 @@
     background: #fdfbf5;
     border-top: 2px dashed rgba(226, 161, 40, 0.25);
     border-bottom: 2px dashed rgba(226, 161, 40, 0.25);
-    padding: 72px 24px;
+    padding: var(--qf-section-vpad) clamp(20px, 4vw, 28px);
   }
   .bonus-header {
     text-align: center;

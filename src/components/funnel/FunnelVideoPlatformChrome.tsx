@@ -2,7 +2,7 @@
 
 /**
  * Decorative platform UI on funnel preview videos (not interactive).
- * YouTube: Shorts-style right rail + thin progress bar + mini brand chip.
+ * YouTube: Shorts-style right rail + progress bar (no brand — baked into Creative).
  * Pinterest: Save pill + overflow dots (typical pin chrome).
  */
 
@@ -61,11 +61,6 @@ const YT_ACTIONS: ReadonlyArray<{
 export function YoutubeShortsVideoChrome(): React.JSX.Element {
   return (
     <div className="qf-yt-shorts-chrome" aria-hidden>
-      <div className="qf-yt-shorts-brand">
-        <span className="qf-yt-shorts-brand-mark">▶</span>
-        <span className="qf-yt-shorts-brand-name">QuotVid</span>
-      </div>
-
       <div className="qf-yt-shorts-rail">
         {YT_ACTIONS.map(({ key, label, Icon }) => (
           <div key={key} className="qf-yt-shorts-action">
