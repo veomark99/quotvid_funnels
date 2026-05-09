@@ -154,6 +154,7 @@ function FunnelCtaBlock({
   const [apiError, setApiError] = useState<string | null>(null);
   const [showSignInLink, setShowSignInLink] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
   const formCardRef = useRef<HTMLDivElement>(null);
 
   const panelRef = useRef<HTMLDivElement>(null);
@@ -214,6 +215,7 @@ function FunnelCtaBlock({
     }
     const local = trimmed.slice(0, at);
     if (local.includes("+")) {
+      setEmailError('Please use a different email — no + signs before the @ symbol.');
       if (emailRef.current) flashField(emailRef.current);
       emailRef.current?.focus();
       return;
@@ -328,12 +330,18 @@ function FunnelCtaBlock({
                   ref={emailRef}
                   id={emailId}
                   type="email"
-                  className="f-email"
+                  className={`f-email${emailError ? " f-email--error" : ""}`}
                   placeholder="you@example.com"
                   autoComplete="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (emailError) setEmailError(null);
+                  }}
                 />
+                {emailError && (
+                  <p className="qf-field-error">{emailError}</p>
+                )}
               </div>
 
               <div className="field-group">

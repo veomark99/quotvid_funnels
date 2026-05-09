@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 /**
  * Decorative platform UI on funnel preview videos (not interactive).
  * YouTube: Shorts-style right rail + progress bar (no brand — baked into Creative).

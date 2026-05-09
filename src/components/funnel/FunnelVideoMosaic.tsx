@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback, useEffect, useState } from "react";
 import type { FunnelVisualCard } from "@/funnels/funnel-models";
 import { resolveFunnelVideoSrc } from "@/lib/funnel-video";
 import {
@@ -23,9 +24,7 @@ function PinSlide({
 }) {
   return (
     <div className="pin">
-      <div
-        className={hasVideo ? "pin-img pin-img--video" : "pin-img"}
-      >
+      <div className={hasVideo ? "pin-img pin-img--video" : "pin-img"}>
         {hasVideo && videoUrl ? (
           <>
             <video
@@ -62,12 +61,34 @@ function PinSlide({
   );
 }
 
+function syncInViewVideos(
+  viewport: HTMLElement | null,
+  slideNodes: HTMLElement[],
+  inViewIndices: readonly number[],
+) {
+  if (!viewport) return;
+  const inView = new Set(inViewIndices);
+  viewport.querySelectorAll<HTMLVideoElement>("video.pin-video").forEach((v) => {
+    void v.pause();
+  });
+  slideNodes.forEach((slide, i) => {
+    if (!inView.has(i)) return;
+    slide.querySelectorAll<HTMLVideoElement>("video.pin-video").forEach((v) => {
+      void v.play().catch(() => {
+        /* autoplay blocked */
+      });
+    });
+  });
+}
+
 interface FunnelVideoMosaicProps {
   visualCards: readonly FunnelVisualCard[];
   heroVisualPinsClassSuffix: string;
   /** e.g. "Example YouTube Shorts" — used for carousel region accessibility */
   carouselAriaLabel?: string;
 }
+
+const MOBILE_MQ = "(max-width: 768px)";
 
 export function FunnelVideoMosaic({
   visualCards,
@@ -76,87 +97,95 @@ export function FunnelVideoMosaic({
 }: FunnelVideoMosaicProps) {
   const platform: FunnelVideoPlatformId =
     heroVisualPinsClassSuffix.includes("pin-yt") ? "youtube" : "pinterest";
-  const trackRef = useRef<HTMLDivElement>(null);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    axis: "x",
+    align: "start",
+    containScroll: "trimSnaps",
+    slidesToScroll: 1,
+    dragFree: false,
+  });
+
   const [activeDot, setActiveDot] = useState(0);
 
-  const updateActive = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const slide = track.querySelector<HTMLElement>(".qf-carousel-slide");
-    if (!slide) return;
-    const slideW = slide.offsetWidth;
-    const gap = 10;
-    const scroll = track.scrollLeft;
-    const idx = Math.round(scroll / Math.max(slideW + gap, 1));
-    setActiveDot(Math.min(visualCards.length - 1, Math.max(0, idx)));
-  }, [visualCards.length]);
+  const onCarouselSettle = useCallback(() => {
+    if (!emblaApi) return;
+    const slides = emblaApi.slideNodes();
+    const viewport = emblaApi.rootNode() as HTMLElement | null;
+    setActiveDot(emblaApi.selectedScrollSnap());
+    syncInViewVideos(viewport, slides, emblaApi.slidesInView());
+  }, [emblaApi]);
 
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    updateActive();
-    track.addEventListener("scroll", updateActive, { passive: true });
-    window.addEventListener("resize", updateActive);
+    if (!emblaApi) return;
+    onCarouselSettle();
+    emblaApi.on("select", onCarouselSettle);
+    emblaApi.on("reInit", onCarouselSettle);
+    emblaApi.on("slidesInView", onCarouselSettle);
     return () => {
-      track.removeEventListener("scroll", updateActive);
-      window.removeEventListener("resize", updateActive);
+      emblaApi.off("select", onCarouselSettle);
+      emblaApi.off("reInit", onCarouselSettle);
+      emblaApi.off("slidesInView", onCarouselSettle);
     };
-  }, [updateActive]);
+  }, [emblaApi, onCarouselSettle]);
+
+  useEffect(() => {
+    if (!emblaApi || typeof window.matchMedia !== "function") return;
+    const mq = window.matchMedia(MOBILE_MQ);
+    const applyAlign = () => {
+      emblaApi.reInit({ align: mq.matches ? "center" : "start" });
+    };
+    applyAlign();
+    mq.addEventListener("change", applyAlign);
+    return () => mq.removeEventListener("change", applyAlign);
+  }, [emblaApi]);
+
+  useEffect(() => {
+    let cancelled = false;
+    window.requestAnimationFrame(() => {
+      if (cancelled) return;
+      emblaApi?.reInit();
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [emblaApi, visualCards.length]);
+
+  const slidesMarkup = visualCards.map((c, i) => {
+    const videoUrl = resolveFunnelVideoSrc(c.videoSrc);
+    const hasVideo = Boolean(videoUrl);
+    return (
+      <div key={i} className="qf-carousel-slide">
+        <PinSlide
+          c={c}
+          hasVideo={hasVideo}
+          videoUrl={videoUrl}
+          platform={platform}
+        />
+      </div>
+    );
+  });
 
   return (
-    <>
+    <div className={`qf-video-carousel${heroVisualPinsClassSuffix}`}>
       <div
-        className={`visual-pins visual-pins--desktop${heroVisualPinsClassSuffix}`}
+        ref={emblaRef}
+        className="qf-carousel-viewport"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label={carouselAriaLabel}
+        aria-live="polite"
       >
-        {visualCards.map((c, i) => {
-          const videoUrl = resolveFunnelVideoSrc(c.videoSrc);
-          const hasVideo = Boolean(videoUrl);
-          return (
-            <PinSlide
-              key={i}
-              c={c}
-              hasVideo={hasVideo}
-              videoUrl={videoUrl}
-              platform={platform}
-            />
-          );
-        })}
+        <div className="qf-carousel-container">{slidesMarkup}</div>
       </div>
-
-      <div className={`qf-video-carousel${heroVisualPinsClassSuffix}`}>
-        <div
-          ref={trackRef}
-          className="qf-carousel-track"
-          role="region"
-          aria-label={carouselAriaLabel}
-        >
-          {visualCards.map((c, i) => {
-            const videoUrl = resolveFunnelVideoSrc(c.videoSrc);
-            const hasVideo = Boolean(videoUrl);
-            return (
-              <div
-                key={i}
-                className="qf-carousel-slide"
-              >
-                <PinSlide
-                  c={c}
-                  hasVideo={hasVideo}
-                  videoUrl={videoUrl}
-                  platform={platform}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <div className="qf-carousel-dots" aria-hidden>
-          {visualCards.map((_, i) => (
-            <span
-              key={i}
-              className={`qf-dot ${i === activeDot ? "qf-dot--active" : ""}`}
-            />
-          ))}
-        </div>
+      <div className="qf-carousel-dots" aria-hidden>
+        {visualCards.map((_, i) => (
+          <span
+            key={i}
+            className={`qf-dot ${i === activeDot ? "qf-dot--active" : ""}`}
+          />
+        ))}
       </div>
-    </>
+    </div>
   );
 }
