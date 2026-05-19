@@ -10,6 +10,7 @@ import {
 } from "react";
 import type { FunnelContentModel, FunnelSlug } from "@/funnels/funnel-models";
 import { FunnelVideoMosaic } from "@/components/funnel/FunnelVideoMosaic";
+import { FunnelSocialProofToast } from "@/components/funnel/FunnelSocialProofToast";
 import {
   PinterestFaqSection,
   PinterestFeaturesSection,
@@ -801,6 +802,7 @@ export function AcquisitionFunnel({ model, funnelSlug }: AcquisitionFunnelProps)
           />
         </div>
       </div>
+      <FunnelSocialProofToast />
     </div>
   );
 }
